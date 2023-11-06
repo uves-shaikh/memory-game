@@ -1,24 +1,40 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import WelcomeScreen from './Components/WelcomeScreen/WelcomeScreen';
+import Cards from './Components/Cards/Cards';
+import SuccessScreen from './Components/SuccessScreen/SuccessScreen';
 
 function App() {
+
+  const [userName, setUserName] = useState('')
+  const [gameStarted, setGameStarted] = useState(false)
+  const [gameCompleted, setGameCompleted] = useState(false)
+
+  const handleNameEntered = (name) => {
+    setUserName(name)
+  }
+
+  const handleStartGame = (name) => {
+    setGameStarted(true)
+  }
+
+  const handleGameComplete = () => {
+    setGameCompleted(true)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {!gameStarted && !gameCompleted && (
+        <WelcomeScreen onNameEntered={handleNameEntered} onPlay={handleStartGame} />
+      )}
+
+      {gameStarted && !gameCompleted && (
+        <Cards onGameComplete={handleGameComplete} userName={userName} />
+      )}
+
+      {gameCompleted && <SuccessScreen userName={userName} />}
+
+    </>
   );
 }
 
